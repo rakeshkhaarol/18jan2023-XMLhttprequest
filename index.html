@@ -11,27 +11,32 @@
     <body>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-4">
-                    <form>
+                <div class="col-4 div1">
+                    <form class="myform">
                         <div class="mb-3">
-                          <label for="fname" class="form-label">First name</label>
-                          <input type="text" class="form-control" id="fname" aria-describedby="emailHelp">
+                          <label for="fname" class="form-label">Full name</label>
+                          <input name="fname" type="text" class="form-control" id="fname" aria-describedby="emailHelp">
                           <div id="fnamelHelp" class="form-text"></div>
                         </div>
+                       
                         <div class="mb-3">
-                          <label for="lname" class="form-label">Last name</label>
-                          <input type="text" class="form-control" id="lname" aria-describedby="emailHelp">
-                          <div id="lnamelHelp" class="form-text"></div>
-                        </div>
-                        <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                          <label for="email" class="form-label">Email address</label>
+                          <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp">
                           <div id="emailHelp" class="form-text"></div>
                         </div>
-                        
-                        <div class="mb-3 form-check">
-                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Select gender</label>
+                            <select  id="gender" class="form-select" name="gender" aria-label="Default select example">
+                                <option value="mele">Mele</option>
+                                <option value="Femele">Femele</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="status" class="form-label">status</label>
+                            <select id="status" class="form-select" name="status" aria-label="Default select example">
+                                <option value="Active">Active</option>
+                                <option value="inActive">inActive</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -101,6 +106,53 @@
             xhttp.open("GET" ,`${url}/public/v2/users`)
 
             xhttp.send();
+        </script>
+        <script>
+            let form = document.querySelector("form.myform")
+            let access_token = "0e5f15c17307322f388455402b4fac818822a1208f978e6b6e76c641e93b2dd0"
+            form.onsubmit =function(e){
+                alert("hello everyone")
+                e.preventDefault();
+
+                let n = form.closest(".div1").querySelector("input#fname").value;
+                //let  n = document.querySelector("input#fname").value
+                console.log(n)
+
+
+                var gm = form.closest(".row");
+                var gmm = gm.querySelector("input#email").value
+                console.log(gmm)
+
+                const ge =form.closest(".container-fluid");
+                const gee = ge.querySelector('#gender').value
+                console.log(gee)
+
+                let ac = form.closest(".row");
+                let acc = ac.querySelector("select#status").value
+                console.log(acc)
+
+                let data ={
+                    //p:v
+                    "name":`${n}`,
+                    "Email":gmm,
+                    "gender":`${gee}`,//verible substritude/ string interpolution
+                    "status":status
+                };
+
+                data = JSON.stringify(data)//convert object to  string
+
+
+                xhttp.onreadystatechange= function(){
+                    if(xhttp.readyState== 4 && xhttp.status == 200){
+                        swal("User Created Successfully!", "You clicked the button!", "success");
+                    }
+                }
+                xhttp.open("POST",`${url}/public/v2/users`)
+                xhttp.setRequestHeader('Authorization', 'Bearer '+ access_token);
+                xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhttp.send(data)
+            }
+            
         </script>
     </body>
 </html>
